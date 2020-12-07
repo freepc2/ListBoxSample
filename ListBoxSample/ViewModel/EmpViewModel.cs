@@ -7,8 +7,9 @@
     using Command;
     using System.Windows.Input;
 
-    class EmpVlewModel : ObservableCollection<Emp>
+    internal class EmpVlewModel : ObservableCollection<Emp>, INotifyPropertyChanged
     {
+        public Emp Selected { get; set; }
         public EmpVlewModel()
         {
             Add(new Emp() { Empno = 1, Ename = "김길동", Job = "Salesman" });
@@ -32,6 +33,7 @@
         }
         private void WindowLoaded()
         {
+
             MessageBox.Show("WindowLoaded");
         }
         public ICommand WindowLoadedCommand { get; private set; }

@@ -38,5 +38,6 @@ namespace ListBoxSample.Model
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(PName));
         }
+     //   public void Set<T>(ref T, [CallbyMemer])
     }
 }
