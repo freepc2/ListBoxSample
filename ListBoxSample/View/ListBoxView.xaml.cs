@@ -25,6 +25,8 @@ namespace ListBoxSample.View
         {
             // StackPanel의 DataContext로 지정된 emps 컬렉션을 소스로 해서 ListCollectionView 생성
             // 이를 이용하여 정렬, 탐색, 필터링 기능 등을 구현한다.
+
+        //    MyCollectionView = rootElement.DataContext as ListCollectionView;
             MyCollectionView = (ListCollectionView)CollectionViewSource.GetDefaultView(rootElement.DataContext);
         }
 
@@ -72,10 +74,7 @@ namespace ListBoxSample.View
                         MyCollectionView.MoveCurrentToLast();
                     break;
             }
-
         }
-
-
 
 
         // 필터링 기능, 관리자만 또는 전체 사원 리스트 출력

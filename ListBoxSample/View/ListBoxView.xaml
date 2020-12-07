@@ -5,10 +5,21 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ListBoxSample.View"
       xmlns:ViewModel="clr-namespace:ListBoxSample.ViewModel"
+      xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      
       Title="ListBoxView">
-
+    <Page.DataContext>
+        <ViewModel:EmpVlewModel/>
+    </Page.DataContext>
+    <!-- 윈도우 시작시에 동작하는 커멘드 -->
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" >
+            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+    
     <Page.Resources>
         <ViewModel:EmpVlewModel x:Key="emps"/>
         <DataTemplate x:Key="template">
@@ -49,7 +60,7 @@
                      ItemsSource="{Binding Source={StaticResource emps}}"
                      ItemTemplate="{StaticResource template}"
                      IsSynchronizedWithCurrentItem="True"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-3,0.333,3,0.333"/>
             <TextBlock Foreground="Blue" Grid.Row="3" Grid.ColumnSpan="3">이전/이후/데이터필터링</TextBlock>
             <Button Grid.Row="4" Grid.Column="0" Name="Previous" Click="OnMove">Previous</Button>
             <Button Grid.Row="4" Grid.Column="1" Name="Next" Click="OnMove">Next</Button>
@@ -60,6 +71,14 @@
             <TextBlock Grid.Row="5" Grid.Column="0" Name="TblkEmpno" Text="{Binding Path=Empno}"/>
             <TextBlock Grid.Row="5" Grid.Column="1" Name="TblkEname" Text="{Binding Path=Ename}"/>
             <TextBlock Grid.Row="5" Grid.Column="2" Name="TblkJob" Text="{Binding Path=Job}"/>
+
+            <ListView>
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="MouseDoubleClick" >
+                        <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+            </ListView>
         </Grid>
     </StackPanel>
 </Page>
