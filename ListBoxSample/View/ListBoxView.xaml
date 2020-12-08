@@ -9,15 +9,11 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="ListBoxView">
+    <!-- Data Context Binding -->
     <Page.DataContext>
         <ViewModel:EmpVlewModel/>
     </Page.DataContext>
-    <!-- 윈도우 시작시에 동작하는 커멘드 -->
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded" >
-            <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    
     
     <Page.Resources>
         <ViewModel:EmpVlewModel x:Key="emps"/>
@@ -34,9 +30,17 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
+    
     <StackPanel Name="rootElement"
-                DataContext="{Binding Source={StaticResource emps}}"
-                DataContextChanged="DCChange">
+                DataContext="{Binding Source={StaticResource emps}}">
+        <!-- DataCentext Changed -->
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="DataContextChanged">
+                <i:InvokeCommandAction 
+                    Command="{Binding DCChanged}"
+                    CommandParameter="{Binding ElementName=rootElement}"/>
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
         <Grid Width="400">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="100"/>
@@ -52,40 +56,32 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock HorizontalAlignment="Center" Grid.ColumnSpan="3">사원 리스트</TextBlock>
-            <Button Grid.Row="1" Grid.Column="0" Name="BtnEmpno" Content="Empno" Click="OnClick"/>
-            <Button Grid.Row="1" Grid.Column="1" Name="BtnEname" Content="Ename" Click="OnClick"/>
-            <Button Grid.Row="1" Grid.Column="2" Name="BtnJob" Content="Job" Click="OnClick"/>
+            <Button Grid.Row="1" Grid.Column="0" Name="BtnEmpno" Content="Empno" Command="{Binding ClickComand}" CommandParameter="{Binding ElementName=BtnEmpno}"/>
+            <Button Grid.Row="1" Grid.Column="1" Name="BtnEname" Content="Ename" Command="{Binding ClickComand}" CommandParameter="{Binding ElementName=BtnEname}"/>
+            <Button Grid.Row="1" Grid.Column="2" Name="BtnJob" Content="Job" Command="{Binding ClickComand}" CommandParameter="{Binding ElementName=BtnJob}"/>
             <ListBox Grid.Row="2" Grid.ColumnSpan="3" Name="empListBox"
                      ItemsSource="{Binding Source={StaticResource emps}}"
                      ItemTemplate="{StaticResource template}"
                      IsSynchronizedWithCurrentItem="True"
-                     SelectedItem="{Binding Selected}"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Margin="-3,0.333,3,0.333">
 
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
+                        <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}"
+                                               CommandParameter="{Binding ElementName=empListBox}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ListBox>
             <TextBlock Foreground="Blue" Grid.Row="3" Grid.ColumnSpan="3">이전/이후/데이터필터링</TextBlock>
-            <Button Grid.Row="4" Grid.Column="0" Name="Previous" Click="OnMove">Previous</Button>
-            <Button Grid.Row="4" Grid.Column="1" Name="Next" Click="OnMove">Next</Button>
-            <Button Grid.Row="4" Grid.Column="2" Name="Filter" Click="OnFilter">Show only Manager</Button>
-
+            <Button Grid.Row="4" Grid.Column="0" Name="Previous" Command="{Binding MoveCommand}" CommandParameter="{Binding ElementName=Previous}">Previous</Button>
+            <Button Grid.Row="4" Grid.Column="1" Name="Next" Command="{Binding MoveCommand}" CommandParameter="{Binding ElementName=Next}">Next</Button>
+            <Button Grid.Row="4" Grid.Column="2" Name="Filter" Command="{Binding FilterCommand}" CommandParameter="{Binding ElementName=Filter}">Show only Manager</Button>
 
 
             <TextBlock Grid.Row="5" Grid.Column="0" Name="TblkEmpno" Text="{Binding Path=Empno}"/>
             <TextBlock Grid.Row="5" Grid.Column="1" Name="TblkEname" Text="{Binding Path=Ename}"/>
             <TextBlock Grid.Row="5" Grid.Column="2" Name="TblkJob" Text="{Binding Path=Job}"/>
 
-            <ListView>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding WindowLoadedCommand}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-            </ListView>
         </Grid>
     </StackPanel>
 </Page>

@@ -59,7 +59,7 @@ namespace ListBoxSample.Command
                 throw new ArgumentNullException("execute");
 
             this._execute = new Action<T>(execute);
-            this._canExecute = new Predicate<T>(canExecute);
+            this._canExecute = canExecute;
         }
 
         public bool CanExecute(object parameter)
